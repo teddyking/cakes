@@ -1,0 +1,14 @@
+---
+applications:
+- name: cakes
+  memory: 128M
+  instances: 1
+  host: origin-dev-cakes
+  domain: cfapps.io
+  path: .
+  services:
+    mongolab-306b7:
+      label: mongolab
+      provider: mongolab
+      version: n/a
+      plan: sandbox

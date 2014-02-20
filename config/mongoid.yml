@@ -1,0 +1,23 @@
+development:
+  sessions:
+    default:
+      uri: 'mongodb://localhost:27017/cakes-dev'
+
+test:
+  sessions:
+    default:
+      uri: 'mongodb://localhost:27017/cakes-test'
+
+<%
+  unless ENV['VCAP_SERVICES'].nil?
+    mydb = JSON.parse(ENV['VCAP_SERVICES'])['mongolab-n/a']
+    credentials = mydb.first['credentials']
+    uri = credentials['uri']
+%>
+
+production:
+  sessions:
+    default:
+      uri: <%= uri %>
+
+<% end %>
