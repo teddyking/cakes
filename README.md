@@ -30,15 +30,18 @@ curl http://cakes.cfapps.io
 curl http://cakes.cfapps.io/users
 
 ## return specific user
-curl http://cakes.cfapps.io/user/username
+curl http://cakes.cfapps.io/users/username
 
 ## create new user
 curl http://cakes.cfapps.io/users -d "username=teddyking&password=testpassword"
 
 # cakes
 ## return a user's cakes
-curl http://cakes.cfapps.io/user/teddyking/cakes
+curl http://cakes.cfapps.io/users/teddyking/cakes
 
 ## create a new cake for a user
-curl http://cakes.cfapps.io/user/teddyking/cakes -d "name=rofl&deliciousness=10"
+curl http://cakes.cfapps.io/users/teddyking/cakes -d "name=rofl&deliciousness=10"
+
+## return a specific cake
+curl http://cakes.cfapps.io/cakes/teddyking/cakename
 ```
