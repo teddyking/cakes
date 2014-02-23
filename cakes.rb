@@ -48,7 +48,7 @@ class Cakes < Sinatra::Base
     user = User.where(username: params[:username]).first
 
     if user.nil?
-      error do
+      not_found do
         {'status' => 'could not find user'}.to_json
       end
     end
@@ -61,6 +61,19 @@ class Cakes < Sinatra::Base
       error do
         {'status' => 'could not create cake for user'}.to_json
       end
+    end
+  end
+
+  get '/cakes/:username/:cake' do
+    user = User.where(username: params[:username]).first
+    cake = user.cakes.select { |c| c.name.eql?(params[:cake]) }.first
+
+    if cake.nil?
+      not_found do
+        {'status' => 'could not find cake'}.to_json
+      end
+    else
+      cake.to_json
     end
   end
 end

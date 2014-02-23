@@ -68,4 +68,15 @@ describe Cakes do
       cake.deliciousness.should eq 8
     end
   end
+
+  describe 'GET /cakes/:username/:cake' do
+    it 'returns the Cake' do
+      create(:user_with_cakes)
+      get '/cakes/test/ROFL'
+
+      json = JSON.parse(last_response.body)
+      json['name'].should eq 'ROFL'
+      json['deliciousness'].should eq 10
+    end
+  end
 end
