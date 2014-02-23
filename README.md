@@ -46,5 +46,5 @@ curl http://cakes.cfapps.io/users/<username>/cakes -d "name=rofl&deliciousness=1
 curl http://cakes.cfapps.io/cakes/<username>/<cakename>
 
 ## delete a cake
-curl -x DELETE http://cakes.cfapps.io/cakes/<username>/<cakename>
+curl -X DELETE http://cakes.cfapps.io/cakes/<username>/<cakename>
 ```
