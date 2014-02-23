@@ -20,7 +20,7 @@ describe Cakes do
       get '/users'
 
       json = JSON.parse(last_response.body)
-      json['users'].count.should eq 2
+      json.count.should eq 2
     end
   end
 
@@ -34,33 +34,32 @@ describe Cakes do
     end
   end
 
-  describe 'GET /user/:username' do
+  describe 'GET /users/:username' do
     it 'returns the User' do
       create(:user)
-      get '/user/test'
+      get '/users/test'
 
       json = JSON.parse(last_response.body)
-      json['user']['username'].should eq 'test'
-      json['user']['password'].should eq 'testpassword'
+      json['username'].should eq 'test'
+      json['password'].should eq 'testpassword'
     end
   end
 
-  describe 'GET /user/:username/cakes' do
+  describe 'GET /users/:username/cakes' do
     it "returns the User's cakes" do
       create(:user_with_cakes)
 
-      get '/user/test/cakes'
+      get '/users/test/cakes'
 
       json = JSON.parse(last_response.body)
-      json['user']['username'].should eq 'test'
-      json['cakes'].count.should eq 3
+      json.count.should eq 3
     end
   end
 
-  describe 'POST /user/:username/cakes' do
+  describe 'POST /users/:username/cakes' do
     it 'creates a Cake for the User' do
       create(:user)
-      post '/user/test/cakes', {:name => 'ROFL', :deliciousness => 8}
+      post '/users/test/cakes', {:name => 'ROFL', :deliciousness => 8}
 
       user = User.all.first
       cake = user.cakes.first

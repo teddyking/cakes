@@ -17,14 +17,14 @@ class Cakes < Sinatra::Base
   get '/users' do
     users = User.all
 
-    {'users' => users}.to_json
+    users.to_json
   end
 
   post '/users' do
     user = User.new(username: params[:username], password: params[:password])
 
     if user.save
-      {'user' => user}.to_json
+      user.to_json
     else
       error do
         {'status' => 'could not save user'}.to_json
@@ -32,20 +32,19 @@ class Cakes < Sinatra::Base
     end
   end
 
-  get '/user/:username' do
-    user = User.where(username: params[:username]).first
-    cakes = user.cakes
-
-    {'user' => user}.to_json
-  end
-
-  get '/user/:username/cakes' do
+  get '/users/:username' do
     user = User.where(username: params[:username]).first
 
-    {'user' => user, 'cakes' => user.cakes}.to_json
+    user.to_json
   end
 
-  post '/user/:username/cakes' do
+  get '/users/:username/cakes' do
+    user = User.where(username: params[:username]).first
+
+    user.cakes.to_json
+  end
+
+  post '/users/:username/cakes' do
     user = User.where(username: params[:username]).first
 
     if user.nil?
@@ -57,7 +56,7 @@ class Cakes < Sinatra::Base
     cake = Cake.new(name: params[:name], deliciousness: params[:deliciousness])
 
     if user.cakes << cake
-      {'user' => user, 'cakes' => user.cakes}.to_json
+      cake.to_json
     else
       error do
         {'status' => 'could not create cake for user'}.to_json
