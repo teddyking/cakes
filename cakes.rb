@@ -10,6 +10,14 @@ class Cakes < Sinatra::Base
     content_type :json
   end
 
+  helpers do
+    def check_nil(resource)
+      if resource.nil?
+        not_found
+      end
+    end
+  end
+
   get '/' do
     {'status' => 'ok'}.to_json
   end
@@ -22,6 +30,7 @@ class Cakes < Sinatra::Base
 
   post '/users' do
     user = User.new(username: params[:username], password: params[:password])
+    check_nil(user)
 
     if user.save
       user.to_json
@@ -34,24 +43,33 @@ class Cakes < Sinatra::Base
 
   get '/users/:username' do
     user = User.where(username: params[:username]).first
+    check_nil(user)
 
     user.to_json
   end
 
+  delete '/users/:username' do
+    user = User.where(username: params[:username]).first
+    check_nil(user)
+
+    user.cakes.each do |cake|
+      cake.delete
+    end
+
+    user.delete
+    {}.to_json
+  end
+
   get '/users/:username/cakes' do
     user = User.where(username: params[:username]).first
+    check_nil(user)
 
     user.cakes.to_json
   end
 
   post '/users/:username/cakes' do
     user = User.where(username: params[:username]).first
-
-    if user.nil?
-      not_found do
-        {'status' => 'could not find user'}.to_json
-      end
-    end
+    check_nil(user)
 
     cake = Cake.new(name: params[:name], deliciousness: params[:deliciousness])
 
@@ -66,31 +84,24 @@ class Cakes < Sinatra::Base
 
   get '/cakes/:username/:cake' do
     user = User.where(username: params[:username]).first
-    cake = user.cakes.select { |c| c.name.eql?(params[:cake]) }.first
+    check_nil(user)
 
-    if cake.nil?
-      not_found do
-        {'status' => 'could not find cake'}.to_json
-      end
-    else
-      cake.to_json
-    end
+    cake = user.cakes.select { |c| c.name.eql?(params[:cake]) }.first
+    check_nil(cake)
+
+    cake.to_json
   end
 
   delete '/cakes/:username/:cake' do
     user = User.where(username: params[:username]).first
+    check_nil(user)
+
     cake = user.cakes.select { |c| c.name.eql?(params[:cake]) }.first
+    check_nil(cake)
 
-    if cake.nil?
-      not_found do
-        {'status' => 'could not find cake'}.to_json
-      end
-    else
-      cake.delete
-      {}.to_json
-    end
+    cake.delete
+    {}.to_json
   end
-
 end
 
 # models

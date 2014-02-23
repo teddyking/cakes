@@ -45,6 +45,16 @@ describe Cakes do
     end
   end
 
+  describe 'DELETE /users/:username' do
+    it 'deletes the User' do
+      create(:user)
+      delete '/users/test'
+
+      last_response.status.should eq 200
+      User.count.should eq 0
+    end
+  end
+
   describe 'GET /users/:username/cakes' do
     it "returns the User's cakes" do
       create(:user_with_cakes)
