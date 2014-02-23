@@ -79,4 +79,14 @@ describe Cakes do
       json['deliciousness'].should eq 10
     end
   end
+
+  describe 'DELETE /cakes/:username/:cake' do
+    it 'deletes the Cake' do
+      create(:user_with_cakes)
+      delete '/cakes/test/ROFL'
+
+      last_response.status.should eq 200
+      Cake.count.should eq 2
+    end
+  end
 end

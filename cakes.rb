@@ -76,6 +76,21 @@ class Cakes < Sinatra::Base
       cake.to_json
     end
   end
+
+  delete '/cakes/:username/:cake' do
+    user = User.where(username: params[:username]).first
+    cake = user.cakes.select { |c| c.name.eql?(params[:cake]) }.first
+
+    if cake.nil?
+      not_found do
+        {'status' => 'could not find cake'}.to_json
+      end
+    else
+      cake.delete
+      {}.to_json
+    end
+  end
+
 end
 
 # models
