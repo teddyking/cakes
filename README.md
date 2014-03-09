@@ -1,10 +1,23 @@
 # About
 
-I'm learning about [Cloud Foundry](https://github.com/cloudfoundry) :D. cakes is a hilariously basic, sinatra-based JSON API. It's developed to run on a Cloud Foundry instance. It depends on Mongo for storage and makes use of the MongoLab service provided at [https://api.run.pivotal.io](https://api.run.pivotal.io).
+I'm learning about [Cloud Foundry](https://github.com/cloudfoundry) :D. cakes is a hilariously basic, sinatra-based JSON API. It's developed to run on a Cloud Foundry instance. It depends on a MongoDB service that's implemented using [this](https://github.com/teddyking/mongodb_broker) service broker.
 
 # Deploying
 ```bash
-cf push
+# Check that the mongodb service broker is available
+cf m
+
+# Create a new mongodb service
+cf cs mongodb free my-mongodb
+
+# Push the app
+cf push cakes
+
+# Bind the service to the app
+cf bs cakes my-mongodb
+
+# Re-push to pick up changes
+cf push cakes
 ```
 # Scaling
 ```bash

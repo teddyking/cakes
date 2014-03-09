@@ -10,9 +10,8 @@ test:
 
 <%
   unless ENV['VCAP_SERVICES'].nil?
-    mydb = JSON.parse(ENV['VCAP_SERVICES'])['mongolab-n/a']
-    credentials = mydb.first['credentials']
-    uri = credentials['uri']
+    vcap_services = JSON.parse(ENV['VCAP_SERVICES'])
+    uri = vcap_services['mongodb'].first['credentials']['uri']
 %>
 
 production:
